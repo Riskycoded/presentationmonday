@@ -273,9 +273,9 @@ const Admin = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10 border-b border-border pb-6">
           <div>
             <SectionHeading
-              label="// administrator"
-              title="Console Dashboard"
-              description="Manage projects and analyze visitor messages securely from the admin console."
+              label="// welcome, adebanjo michael"
+              title="Welcome Back, Michael!"
+              description="Manage your projects and incoming messages in real-time."
             />
             <div className="mt-2 flex flex-wrap items-center gap-2 font-mono text-xs text-muted-foreground">
               <span className="bg-primary/10 text-primary px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider">
