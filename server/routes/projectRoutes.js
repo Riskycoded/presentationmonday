@@ -40,7 +40,7 @@ router.get('/seed', async (req, res, next) => {
       {
         title: "Jeropath International",
         description: "Study abroad agency website connecting students with international education opportunities. Features comprehensive service listings, destination guides, and inquiry forms.",
-        image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop",
+        image: "https://raw.githubusercontent.com/Riskycoded/presentationmonday/main/craft-portfolio/src/assets/screenshot.png",
         tags: ["React", "Node.js", "PostgreSQL", "Stripe"],
         github: "https://github.com/Riskycoded/Jeropathinternational",
         live: "https://jeropathinternational.vercel.app/",
@@ -53,7 +53,7 @@ router.get('/seed', async (req, res, next) => {
       {
         title: "Car Rental Service",
         description: "Modern car rental platform with booking management, vehicle filtering, and user reviews.",
-        image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&h=400&fit=crop",
+        image: "https://raw.githubusercontent.com/Riskycoded/presentationmonday/main/craft-portfolio/src/assets/mrscar.png",
         tags: ["React", "D3.js", "WebSocket", "Docker"],
         github: "#",
         live: "#",
@@ -66,7 +66,7 @@ router.get('/seed', async (req, res, next) => {
       {
         title: "Team Task Manager",
         description: "Collaborative task management application with real-time updates. Features include dashboard analytics, kanban boards, team chat, calendar scheduling, and user settings.",
-        image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=600&h=400&fit=crop",
+        image: "https://raw.githubusercontent.com/Riskycoded/presentationmonday/main/craft-portfolio/src/assets/TeamApp.png",
         tags: ["Next.js", "OpenAI", "TypeScript", "Tailwind"],
         github: "https://github.com/Riskycoded/finalpresentation",
         live: "https://finalpresentation-puce.vercel.app/",
