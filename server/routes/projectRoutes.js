@@ -158,7 +158,7 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', protect, async (req, res, next) => {
   try {
     const db = await connectDB();
-    const { title, description, image, tags, github, live, category, role, outcome } = req.body;
+    const { title, description, image, tags, github, live, category, role, outcome, published } = req.body;
 
     if (!title || !description || !category || !role) {
       return res.status(400).json({ success: false, error: 'Please provide title, description, category, and role' });
@@ -174,6 +174,7 @@ router.post('/', protect, async (req, res, next) => {
       category,
       role,
       outcome: outcome || '',
+      published: published !== false,
       createdAt: new Date(),
       updatedAt: new Date()
     };

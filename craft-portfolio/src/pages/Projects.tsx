@@ -46,6 +46,7 @@ const Projects = () => {
   const [allProjects, setAllProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
   const [previewProject, setPreviewProject] = useState<Project | null>(null);
 
   // Fetch all projects once on mount to avoid latency on filter changes
@@ -76,9 +77,18 @@ const Projects = () => {
   }, []);
 
   // Filter projects in-memory for instant response times
-  const projects = allProjects.filter(
-    p => activeFilter === "all" || p.category.toLowerCase() === activeFilter.toLowerCase()
-  );
+  const projects = allProjects.filter(p => {
+    const matchesCategory = activeFilter === "all" || p.category.toLowerCase() === activeFilter.toLowerCase();
+    const matchesSearch = 
+      p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+    
+    // Filter out drafts (published should default to true if undefined)
+    const isPublished = (p as any).published !== false;
+    
+    return matchesCategory && matchesSearch && isPublished;
+  });
 
   return (
     <div className="pt-16">
@@ -90,22 +100,33 @@ const Projects = () => {
             description="A comprehensive collection of my work across different domains, design systems, and full-stack applications."
           />
 
-          {/* Filters */}
+          {/* Filters & Search */}
           <AnimatedSection className="mb-10">
-            <div className="flex flex-wrap gap-2">
-              {filters.map((filter) => (
-                <button
-                  key={filter}
-                  onClick={() => setActiveFilter(filter)}
-                  className={`font-mono text-sm px-4 py-2 rounded-lg transition-all duration-200 ${
-                    activeFilter === filter
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-secondary text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {filter}
-                </button>
-              ))}
+            <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+              <div className="flex flex-wrap gap-2">
+                {filters.map((filter) => (
+                  <button
+                    key={filter}
+                    onClick={() => setActiveFilter(filter)}
+                    className={`font-mono text-sm px-4 py-2 rounded-lg transition-all duration-200 ${
+                      activeFilter === filter
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-secondary text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
+              <div className="w-full md:w-72">
+                <input
+                  type="text"
+                  placeholder="Search projects or tags..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full bg-secondary text-foreground border border-border/65 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/45 transition-all"
+                />
+              </div>
             </div>
           </AnimatedSection>
 

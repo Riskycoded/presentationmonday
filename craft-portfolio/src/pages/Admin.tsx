@@ -16,6 +16,7 @@ interface Project {
   category: string;
   role: string;
   outcome: string;
+  published?: boolean;
 }
 
 interface ContactMessage {
@@ -48,7 +49,8 @@ const Admin = () => {
     live: "",
     category: "frontend",
     role: "",
-    outcome: ""
+    outcome: "",
+    published: true
   });
 
   const getHeaders = () => {
@@ -149,7 +151,8 @@ const Admin = () => {
       live: project.live || "",
       category: project.category,
       role: project.role || "",
-      outcome: project.outcome || ""
+      outcome: project.outcome || "",
+      published: project.published !== false
     });
     window.scrollTo({ top: 300, behavior: "smooth" });
   };
@@ -166,7 +169,8 @@ const Admin = () => {
       live: "",
       category: "frontend",
       role: "",
-      outcome: ""
+      outcome: "",
+      published: true
     });
   };
 
@@ -186,7 +190,8 @@ const Admin = () => {
       live: form.live,
       category: form.category,
       role: form.role,
-      outcome: form.outcome
+      outcome: form.outcome,
+      published: form.published
     };
 
     try {
@@ -473,12 +478,25 @@ const Admin = () => {
                       </div>
                     </div>
 
-                    <div className="flex gap-2 pt-2">
+                    <div className="flex items-center gap-2 py-1">
+                      <input
+                        type="checkbox"
+                        id="project-published"
+                        checked={form.published}
+                        onChange={e => setForm({ ...form, published: e.target.checked })}
+                        className="rounded border-border text-primary focus:ring-primary/40 h-4 w-4 bg-background"
+                      />
+                      <label htmlFor="project-published" className="font-mono text-xs text-muted-foreground cursor-pointer select-none">
+                        Publish immediately (make visible to guests)
+                      </label>
+                    </div>
+
+                    <div className="flex gap-2 pt-1">
                       <button
                         type="submit"
                         className="flex-1 bg-primary text-primary-foreground font-mono text-xs py-2.5 rounded-lg hover:opacity-90 transition-opacity"
                       >
-                        {isEditing ? "Apply Changes" : "Publish Project"}
+                        {isEditing ? "Apply Changes" : "Save Project"}
                       </button>
                       {isEditing && (
                         <button
@@ -517,7 +535,14 @@ const Admin = () => {
                               className="w-16 h-10 object-cover rounded border border-border"
                             />
                             <div>
-                              <h4 className="font-semibold text-sm text-foreground">{project.title}</h4>
+                              <div className="flex items-center gap-2">
+                                <h4 className="font-semibold text-sm text-foreground">{project.title}</h4>
+                                {project.published === false ? (
+                                  <span className="text-[9px] font-mono bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 px-1.5 py-0.5 rounded font-bold uppercase tracking-wide">Draft</span>
+                                ) : (
+                                  <span className="text-[9px] font-mono bg-green-500/10 text-green-500 border border-green-500/20 px-1.5 py-0.5 rounded font-bold uppercase tracking-wide">Live</span>
+                                )}
+                              </div>
                               <p className="text-xs text-muted-foreground line-clamp-1 max-w-md">{project.description}</p>
                               <div className="flex items-center gap-2 mt-1">
                                 <span className="text-[10px] font-mono bg-primary/10 text-primary px-1.5 py-0.5 rounded">
@@ -558,9 +583,26 @@ const Admin = () => {
 
         {/* Messages Tab */}
         {activeTab === "messages" && (
-          <AnimatedSection>
-            <div className="bg-card border border-border rounded-xl overflow-hidden shadow-lg max-w-4xl mx-auto">
-              <div className="p-5 border-b border-border bg-card/50">
+          <div className="space-y-6 max-w-4xl mx-auto">
+            {/* Metrics Grid */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="bg-card border border-border rounded-xl p-4 shadow-sm flex flex-col">
+                <span className="text-[10px] font-mono uppercase text-muted-foreground tracking-wider mb-1">Total Received</span>
+                <span className="text-2xl font-bold text-foreground">{messages.length}</span>
+              </div>
+              <div className="bg-card border border-border/80 rounded-xl p-4 shadow-sm flex flex-col border-l-2 border-l-primary">
+                <span className="text-[10px] font-mono uppercase text-muted-foreground tracking-wider mb-1">New Unread</span>
+                <span className="text-2xl font-bold text-primary">{messages.filter(m => !m.read).length}</span>
+              </div>
+              <div className="bg-card border border-border/85 rounded-xl p-4 shadow-sm flex flex-col border-l-2 border-l-green-500/80">
+                <span className="text-[10px] font-mono uppercase text-muted-foreground tracking-wider mb-1">Read Messages</span>
+                <span className="text-2xl font-bold text-green-500">{messages.filter(m => m.read).length}</span>
+              </div>
+            </div>
+
+            <AnimatedSection>
+              <div className="bg-card border border-border rounded-xl overflow-hidden shadow-lg">
+                <div className="p-5 border-b border-border bg-card/50">
                 <h3 className="font-semibold text-foreground">Contact Form Messages Log</h3>
               </div>
               <div className="divide-y divide-border">
@@ -608,6 +650,7 @@ const Admin = () => {
               </div>
             </div>
           </AnimatedSection>
+          </div>
         )}
       </section>
     </div>
