@@ -23,7 +23,9 @@ connectDB();
 
 const allowedOrigins = [
   'http://localhost:8080',
-  'https://presentationmonday-kappa.vercel.app'
+  'https://presentationmonday-kappa.vercel.app',
+  'https://riskycoded.site',
+  'https://www.riskycoded.site'
 ];
 
 app.use(cors({
