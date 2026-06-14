@@ -10,7 +10,7 @@ const seedProjects = [
     github: "https://github.com/Riskycoded/Jeropathinternational",
     live: "https://jeropathinternational.vercel.app/",
     category: "frontend",
-    role: "Frontend Developer",
+    role: "Full-Stack Developer",
     outcome: "Client project delivering modern study abroad consultancy platform.",
     createdAt: new Date(),
     updatedAt: new Date()
@@ -23,7 +23,7 @@ const seedProjects = [
     github: "#",
     live: "#",
     category: "frontend",
-    role: "Frontend Developer",
+    role: "Full-Stack Developer",
     outcome: "Clean vehicle booking application with modern UI/UX.",
     createdAt: new Date(),
     updatedAt: new Date()
@@ -49,7 +49,7 @@ const seedProjects = [
     github: "#",
     live: "#",
     category: "frontend",
-    role: "Frontend Developer",
+    role: "Full-Stack Developer",
     outcome: "Reusable component library for consistent design.",
     createdAt: new Date(),
     updatedAt: new Date()

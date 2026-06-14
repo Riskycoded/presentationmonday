@@ -43,46 +43,42 @@ const defaultProjects: Project[] = [
 ];
 
 const Projects = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [allProjects, setAllProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState("all");
   const [previewProject, setPreviewProject] = useState<Project | null>(null);
 
-  // Dynamically fetch projects from Native MongoDB.
-  // Whenever the activeFilter state changes, a new API call is made,
-  // prompting MongoDB to filter results at the database layer.
-  // Falls back to local/default projects if the server is offline or database is empty.
+  // Fetch all projects once on mount to avoid latency on filter changes
   useEffect(() => {
     const fetchProjects = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`${API_URL}/projects?category=${activeFilter}`);
+        const response = await fetch(`${API_URL}/projects`);
         if (!response.ok) {
           throw new Error("Could not retrieve projects from database.");
         }
         const data = await response.json();
         if (data && data.length > 0) {
-          setProjects(data);
+          setAllProjects(data);
         } else {
-          const filtered = defaultProjects.filter(
-            p => activeFilter === "all" || p.category === activeFilter
-          );
-          setProjects(filtered);
+          setAllProjects(defaultProjects);
         }
       } catch (error: any) {
         console.error("❌ Error loading projects:", error);
         toast.error("Could not load database records. Showing default projects.");
-        const filtered = defaultProjects.filter(
-          p => activeFilter === "all" || p.category === activeFilter
-        );
-        setProjects(filtered);
+        setAllProjects(defaultProjects);
       } finally {
         setLoading(false);
       }
     };
 
     fetchProjects();
-  }, [activeFilter]);
+  }, []);
+
+  // Filter projects in-memory for instant response times
+  const projects = allProjects.filter(
+    p => activeFilter === "all" || p.category.toLowerCase() === activeFilter.toLowerCase()
+  );
 
   return (
     <div className="pt-16">
@@ -91,7 +87,7 @@ const Projects = () => {
           <SectionHeading
             label="// portfolio"
             title="All Projects"
-            description="A comprehensive collection of my work across different domains and tech stacks, retrieved live from a native MongoDB database."
+            description="A comprehensive collection of my work across different domains, design systems, and full-stack applications."
           />
 
           {/* Filters */}
@@ -117,7 +113,7 @@ const Projects = () => {
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20">
               <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4" />
-              <p className="font-mono text-sm text-muted-foreground">Retrieving live database records...</p>
+              <p className="font-mono text-sm text-muted-foreground">Loading projects...</p>
             </div>
           ) : projects.length === 0 ? (
             <div className="text-center py-20">

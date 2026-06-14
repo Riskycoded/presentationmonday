@@ -85,7 +85,7 @@ const Index = () => {
             transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="text-muted-foreground max-w-lg text-lg mb-10"
           >
-            Frontend developer specializing in building exceptional digital experiences.
+            Full-stack developer specializing in building exceptional digital experiences.
             Currently focused on building accessible, human-centered products.
           </motion.p>
 
@@ -119,7 +119,7 @@ const Index = () => {
             <a href="https://github.com/riskycoded" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="GitHub">
               <Github size={20} />
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="LinkedIn">
+            <a href="https://www.linkedin.com/in/adebanjo-michael-2b2b971b5" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="LinkedIn">
               <Linkedin size={20} />
             </a>
             <a href="https://x.com/markerinemk?s=21" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Twitter">

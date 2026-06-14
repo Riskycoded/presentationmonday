@@ -5,22 +5,22 @@ import SectionHeading from "@/components/SectionHeading";
 const skills = {
   Frontend: ["React", "TypeScript", "Next.js", "Tailwind CSS", "JavaScript", "HTML", "CSS"],
   Animation: ["Framer Motion"],
-  Backend: ["Firebase", "Supabase", "Node.js", "REST APIs"],
-  Tools: ["Git", "Figma", "Vercel", "Netlify", "Emailjs"],
+  Backend: ["Node.js", "Express", "MongoDB", "REST APIs", "Firebase", "Supabase", "Resend"],
+  Tools: ["Git", "Figma", "Docker", "Vercel", "Render", "Netlify"],
 };
 
 const experience = [
   {
-    role: "Frontend Developer",
+    role: "Full-Stack Developer",
     company: "Malhub",
     period: "2025 — Present",
-    description: "Building responsive web applications and implementing modern UI/UX practices. Working with React, TypeScript, and Tailwind CSS.",
+    description: "Building responsive web applications, developing RESTful APIs, and implementing modern UI/UX practices. Working with React, TypeScript, Node.js, Express, and MongoDB.",
   },
   {
-    role: "Freelance Frontend Developer",
+    role: "Freelance Full-Stack Developer",
     company: "Self-Employed",
     period: "2022 — Present",
-    description: "Delivered web solutions for 10+ clients across various industries. Specialized in React-based websites with focus on conversion optimization and user experience.",
+    description: "Delivered complete full-stack web solutions for 10+ clients. Built secure web applications, database integrations, and optimized user flows for performance and conversion.",
   },
   {
     role: "Digital Marketing Specialist",
@@ -41,7 +41,7 @@ const About = () => {
             <AnimatedSection className="md:col-span-3">
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
-                  I'm a frontend developer with a passion for creating scalable, user-intuitive websites that convert. With over 3 years of experience in TypeScript, JavaScript, React, and Tailwind CSS, I've worked on projects for companies, brands, and agencies.
+                  I'm a full-stack developer with a passion for creating scalable, user-intuitive applications and robust backends. With over 3 years of experience in TypeScript, React, Node.js, and MongoDB, I've worked on projects for companies, brands, and agencies.
                 </p>
                 <p>
                   My journey started with a need to build visually appealing websites for my friends back in school. I specialize in React ecosystems but I'm comfortable with other tools as well.
@@ -71,7 +71,7 @@ const About = () => {
                 <pre className="font-mono text-sm text-muted-foreground leading-relaxed">
 {`const developer = {
   name: "Adebanjo Michael",
-  role: "Frontend Dev",
+  role: "Full-Stack Dev",
   location: "Lagos, Nigeria",
   available: true,
   coffee: "always ☕"
