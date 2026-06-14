@@ -7,15 +7,32 @@ const { connectDB } = require('../config/db');
 // Protect routes using Passport Custom Session Strategy
 const protect = passport.authenticate('session', { session: false });
 
+// Simple in-memory cache for projects to eliminate MongoDB query latency
+let projectsCache = null;
+
+// Helper to invalidate cache
+const invalidateCache = () => {
+  projectsCache = null;
+  console.log('⚡ Projects cache invalidated');
+};
+
 // @desc    Get all projects (with native MongoDB filter query)
 // @route   GET /api/projects?category=frontend
 router.get('/', async (req, res, next) => {
   try {
+    // Return cached projects if query is 'all' or empty and cache is warmed up
+    const hasCategoryQuery = req.query.category && req.query.category !== 'all';
+    
+    if (!hasCategoryQuery && projectsCache) {
+      console.log('⚡ Serving projects from memory cache');
+      return res.json(projectsCache);
+    }
+
     const db = await connectDB();
     const filterQuery = {};
 
     // Apply native MongoDB filtering based on category search query
-    if (req.query.category && req.query.category !== 'all') {
+    if (hasCategoryQuery) {
       filterQuery.category = req.query.category;
     }
 
@@ -24,6 +41,12 @@ router.get('/', async (req, res, next) => {
       .find(filterQuery)
       .sort({ createdAt: -1 })
       .toArray();
+
+    // Cache the full results list
+    if (!hasCategoryQuery) {
+      projectsCache = projects;
+      console.log('⚡ Warmed up projects memory cache');
+    }
 
     res.json(projects);
   } catch (error) {
@@ -106,6 +129,7 @@ router.get('/seed', async (req, res, next) => {
 
     await db.collection('projects').deleteMany({});
     const result = await db.collection('projects').insertMany(seedProjects);
+    invalidateCache();
     res.json({ success: true, message: `Successfully seeded ${result.insertedCount} projects into MongoDB!` });
   } catch (error) {
     next(error);
@@ -155,6 +179,7 @@ router.post('/', protect, async (req, res, next) => {
     };
 
     const result = await db.collection('projects').insertOne(newProject);
+    invalidateCache();
     res.status(201).json({ success: true, data: { _id: result.insertedId, ...newProject } });
   } catch (error) {
     next(error);
@@ -188,6 +213,7 @@ router.put('/:id', protect, async (req, res, next) => {
 
     // Get the updated project to return it
     const updatedProject = await db.collection('projects').findOne({ _id: new ObjectId(projectId) });
+    invalidateCache();
     res.json({ success: true, data: updatedProject });
   } catch (error) {
     next(error);
@@ -207,6 +233,7 @@ router.delete('/:id', protect, async (req, res, next) => {
       return res.status(404).json({ success: false, error: 'Project not found' });
     }
 
+    invalidateCache();
     res.json({ success: true, message: 'Project deleted successfully' });
   } catch (error) {
     next(error);
