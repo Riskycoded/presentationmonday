@@ -3,6 +3,7 @@ const router = express.Router();
 const passport = require('passport');
 const { ObjectId } = require('mongodb');
 const { connectDB } = require('../config/db');
+const { Resend } = require('resend');
 
 // Protect routes using Passport Custom Session Strategy
 const protect = passport.authenticate('session', { session: false });
@@ -34,46 +35,39 @@ router.post('/', async (req, res, next) => {
 
     const result = await db.collection('contacts').insertOne(newContact);
 
-    // Send email notification via Resend
+    // Send email notification via Resend SDK
     const resendApiKey = process.env.RESEND_API_KEY;
     const adminEmail = process.env.ADMIN_EMAIL || 'adebanjom16@gmail.com';
 
     if (resendApiKey) {
       try {
-        const emailResponse = await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${resendApiKey}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            from: 'Portfolio Contact <onboarding@resend.dev>',
-            to: adminEmail,
-            subject: `New Portfolio Message from ${name}`,
-            html: `
-              <div style="font-family: sans-serif; padding: 20px; color: #333; max-width: 600px; border: 1px solid #eee; border-radius: 8px;">
-                <h2 style="color: #6366f1; border-bottom: 1px solid #eee; padding-bottom: 10px;">New Inquiry Received</h2>
-                <p><strong>Name:</strong> ${name}</p>
-                <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-                <p><strong>Message:</strong></p>
-                <div style="background-color: #f9fafb; padding: 15px; border-radius: 6px; border: 1px solid #f3f4f6; font-style: italic;">
-                  "${message}"
-                </div>
-                <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
-                <p style="font-size: 11px; color: #9ca3af;">This message has also been saved to your MongoDB database.</p>
+        const resend = new Resend(resendApiKey);
+        const { data, error } = await resend.emails.send({
+          from: 'Portfolio Contact <onboarding@resend.dev>',
+          to: [adminEmail],
+          subject: `New Portfolio Message from ${name}`,
+          html: `
+            <div style="font-family: sans-serif; padding: 20px; color: #333; max-width: 600px; border: 1px solid #eee; border-radius: 8px;">
+              <h2 style="color: #6366f1; border-bottom: 1px solid #eee; padding-bottom: 10px;">New Inquiry Received</h2>
+              <p><strong>Name:</strong> ${name}</p>
+              <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+              <p><strong>Message:</strong></p>
+              <div style="background-color: #f9fafb; padding: 15px; border-radius: 6px; border: 1px solid #f3f4f6; font-style: italic;">
+                "${message}"
               </div>
-            `
-          })
+              <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
+              <p style="font-size: 11px; color: #9ca3af;">Sent from your portfolio contact form.</p>
+            </div>
+          `
         });
 
-        if (!emailResponse.ok) {
-          const errData = await emailResponse.json();
-          console.error('❌ Resend API Error:', errData);
+        if (error) {
+          console.error('❌ Resend SDK Error:', error);
         } else {
-          console.log('📧 Notification email sent successfully via Resend!');
+          console.log('📧 Email sent successfully! ID:', data.id);
         }
       } catch (emailErr) {
-        console.error('❌ Failed to trigger Resend email notification:', emailErr.message);
+        console.error('❌ Failed to send email via Resend:', emailErr.message);
       }
     } else {
       console.warn('⚠️ RESEND_API_KEY not configured. Skipping email notification.');
