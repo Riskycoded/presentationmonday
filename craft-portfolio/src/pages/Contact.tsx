@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mail, MapPin, Send, Github, Linkedin, Twitter } from "lucide-react";
+import { Mail, MapPin, Phone, Send, Github, Linkedin, Twitter } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import SectionHeading from "@/components/SectionHeading";
 import { toast } from "sonner";
@@ -97,8 +97,11 @@ const Contact = () => {
               <div>
                 <h3 className="font-semibold text-foreground mb-4">Contact Info</h3>
                 <div className="space-y-3">
-                  <a href="mailto:hello@alexchen.dev" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <a href="mailto:adebanjom16@gmail.com" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
                     <Mail size={16} className="text-primary" /> adebanjom16@gmail.com
+                  </a>
+                  <a href="tel:+2348084677822" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
+                    <Phone size={16} className="text-primary" /> +234 808 467 7822
                   </a>
                   <div className="flex items-center gap-3 text-sm text-muted-foreground">
                     <MapPin size={16} className="text-primary" /> Lagos, Nigeria
