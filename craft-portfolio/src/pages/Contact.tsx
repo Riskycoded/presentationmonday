@@ -123,7 +123,7 @@ const Contact = () => {
                   <a href="https://github.com/riskycoded" target="_blank" rel="noopener noreferrer" className="p-2.5 bg-secondary rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all" aria-label="GitHub">
                     <Github size={18} />
                   </a>
-                  <a href="www.linkedin.com/in/adebanjo-michael-2b2b971b5" target="_blank" rel="noopener noreferrer" className="p-2.5 bg-secondary rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all" aria-label="LinkedIn">
+                  <a href="https://www.linkedin.com/in/adebanjo-michael-2b2b971b5" target="_blank" rel="noopener noreferrer" className="p-2.5 bg-secondary rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all" aria-label="LinkedIn">
                     <Linkedin size={18} />
                   </a>
                   <a href="https://x.com/markerinemk?s=21" target="_blank" rel="noopener noreferrer" className="p-2.5 bg-secondary rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all" aria-label="Twitter">
