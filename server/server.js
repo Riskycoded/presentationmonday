@@ -21,9 +21,26 @@ require('./config/passport')(passport);
 // Initialize Database Connection
 connectDB();
 
-// Middlewares
+const allowedOrigins = [
+  'http://localhost:8080',
+  'https://presentationmonday-kappa.vercel.app'
+];
+
 app.use(cors({
-  origin: 'http://localhost:8080', // Allow requests from our React App port 8080
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, postman)
+    if (!origin) return callback(null, true);
+    
+    const isAllowed = allowedOrigins.includes(origin) || 
+                      origin.endsWith('.vercel.app') || 
+                      (process.env.FRONTEND_URL && origin === process.env.FRONTEND_URL);
+                      
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));

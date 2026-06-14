@@ -5,6 +5,8 @@ const passport = require('passport');
 const crypto = require('crypto');
 const { connectDB } = require('../config/db');
 
+const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:8080';
+
 // Helper function to create a new session in MongoDB
 async function createAdminSession(email) {
   const db = await connectDB();
@@ -79,16 +81,16 @@ router.get('/google', (req, res, next) => {
 router.get('/google/callback', (req, res, next) => {
   passport.authenticate('google', { session: false }, async (err, user, info) => {
     if (err || !user) {
-      return res.redirect('http://localhost:8080/admin/login?error=unauthorized');
+      return res.redirect(`${frontendUrl}/admin/login?error=unauthorized`);
     }
 
     try {
       // Generate and store session in MongoDB for Google user
       const sessionId = await createAdminSession(user.email);
       // Redirect to the frontend admin dashboard, passing the Session ID in query parameters
-      return res.redirect(`http://localhost:8080/admin?token=${sessionId}`);
+      return res.redirect(`${frontendUrl}/admin?token=${sessionId}`);
     } catch (dbError) {
-      return res.redirect('http://localhost:8080/admin/login?error=db_error');
+      return res.redirect(`${frontendUrl}/admin/login?error=db_error`);
     }
   })(req, res, next);
 });
@@ -103,9 +105,9 @@ router.get('/google/mock', async (req, res) => {
     // Generate and store session in MongoDB
     const sessionId = await createAdminSession(adminEmail);
     // Redirect to frontend dashboard with mock token
-    res.redirect(`http://localhost:8080/admin?token=${sessionId}`);
+    res.redirect(`${frontendUrl}/admin?token=${sessionId}`);
   } catch (error) {
-    res.redirect('http://localhost:8080/admin/login?error=db_error');
+    res.redirect(`${frontendUrl}/admin/login?error=db_error`);
   }
 });
 
