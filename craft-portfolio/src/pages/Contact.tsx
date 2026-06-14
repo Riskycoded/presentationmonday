@@ -25,7 +25,7 @@ const Contact = () => {
         throw new Error(result.error || "Failed to submit message.");
       }
 
-      toast.success("Message sent! Saved directly to Native MongoDB.");
+      toast.success("Message sent successfully! You'll receive an email confirmation shortly.");
       setFormData({ name: "", email: "", message: "" });
     } catch (error: any) {
       console.error("❌ Form submit error:", error);
