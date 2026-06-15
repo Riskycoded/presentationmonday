@@ -51,7 +51,8 @@ const About = () => {
                 </p>
               </div>
               <a
-                href="#"
+                href="/Adebanjo_Michael_Resume.pdf"
+                download="Adebanjo_Michael_Resume.pdf"
                 className="inline-flex items-center gap-2 mt-6 font-mono text-sm text-primary border border-primary px-5 py-2.5 rounded-lg hover:bg-primary/10 transition-colors"
               >
                 <Download size={16} /> Download Resume
