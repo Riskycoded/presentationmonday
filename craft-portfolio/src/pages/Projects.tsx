@@ -144,7 +144,14 @@ const Projects = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {projects.map((project, i) => (
                 <AnimatedSection key={project.title} delay={i * 0.05}>
-                  <ProjectCard project={project} onPreview={setPreviewProject} />
+                  <ProjectCard 
+                    project={project} 
+                    onPreview={setPreviewProject} 
+                    onTagClick={(tag) => {
+                      setSearchTerm(tag);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                  />
                 </AnimatedSection>
               ))}
             </div>

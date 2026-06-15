@@ -17,7 +17,7 @@ export interface Project {
   outcome?: string;
 }
 
-const ProjectCard = ({ project, onPreview }: { project: Project; onPreview?: (project: Project) => void }) => {
+const ProjectCard = ({ project, onPreview, onTagClick }: { project: Project; onPreview?: (project: Project) => void; onTagClick?: (tag: string) => void }) => {
   return (
     <motion.div
       whileHover={{ y: -4 }}
@@ -60,9 +60,13 @@ const ProjectCard = ({ project, onPreview }: { project: Project; onPreview?: (pr
         <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{project.description}</p>
         <div className="flex flex-wrap gap-2">
           {project.tags.map((tag) => (
-            <span key={tag} className="text-xs font-mono text-primary bg-primary/10 px-2 py-1 rounded">
+            <button
+              key={tag}
+              onClick={() => onTagClick?.(tag)}
+              className="text-xs font-mono text-primary bg-primary/10 px-2 py-1 rounded hover:bg-primary/20 hover:scale-105 transition-all cursor-pointer"
+            >
               {tag}
-            </span>
+            </button>
           ))}
         </div>
       </div>
